@@ -1,0 +1,213 @@
+{
+  "name": "@materia-technologies-inc/miscellaneouscomponents",
+  "version": "1.0.0-wip",
+  "author": "MTI",
+  "license": "SEE LICENSE IN License.md",
+  "publishConfig": {
+    "@materia-technologies-inc:registry": "https://npm.pkg.github.com"
+  },
+  "type": "module",
+  "description": "Materia blazor components",
+  "keywords": [
+    "materia",
+    "material",
+    "material design",
+    "design system",
+    "components",
+    "web components",
+    "lit",
+    "blazor"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/materia-technologies-inc/materia.git"
+  },
+  "bugs": {
+    "url": "https://github.com/material-components/material-web/issues"
+  },
+  "homepage": "https://github.com/material-components/material-web#readme",
+  "engines": {
+    "npm": "Please use pnpm to install this package",
+    "pnpm": ">=9.12.2",
+    "yarn": "Please use pnpm to install this package"
+  },
+  "packageManager": "pnpm@10.18.2+sha512.9fb969fa749b3ade6035e0f109f0b8a60b5d08a1a87fdf72e337da90dcc93336e2280ca4e44f2358a649b83c17959e9993e777c2080879f3801e6f0d999ad3dd",
+  "pnpm": {
+    "ignoredBuiltDependencies": [
+      "@parcel/watcher"
+    ]
+  },
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^28.0.6",
+    "@rollup/plugin-node-resolve": "^16.0.2",
+    "@rollup/plugin-replace": "^6.0.2",
+    "@rollup/plugin-terser": "^0.4.4",
+    "@types/markdown-it": "^14.1.2",
+    "@types/node": "^24.7.2",
+    "copyfiles": "2.4.1",
+    "eslint": "^9.37.0",
+    "json5": "^2.2.3",
+    "lit": "^3.3.1",
+    "markdown-it": "^14.1.0",
+    "rollup": "^4.52.4",
+    "rollup-plugin-summary": "^3.0.1",
+    "sass": "^1.93.2",
+    "typescript": "^5.9.3",
+    "vite": "npm:rolldown-vite@^7.1.16",
+    "vite-tsconfig-paths": "^5.1.4",
+    "wireit": "^0.14.12"
+  },
+  "scripts": {
+    "comment001": "A language without comments is almost as brain dead as a case sensitive file system",
+    "comment002": "x",
+    "comment003": "The following commands are 'active' in miscellaneouscomponents",
+    "build": "wireit",
+    "clean": "deno --check --allow-read --allow-write clean/clean.ts",
+    "compile-package": "json5 -o package.json --space 2 package.json5",
+    "dev": "wireit",
+    "serve": "wireit"
+  },
+  "wireit": {
+    "dev": {
+      "command": "vite --force",
+      "dependencies": [ "scan-content" ]
+    },
+    "serve": {
+      "command": "vite --force",
+      "dependencies": [ "scan-content" ]
+    },
+    "scan-content": {
+      "command": "deno --check --allow-read --allow-write Scripts/generate-content-directory-list/generate-content-directory-list.ts"
+    },
+    "build": {
+      "dependencies": [ "build-website-shared-implementation-styles" ]
+    },
+    "build-website-shared-implementation-styles": {
+      "command": "sass --no-color --unicode --style=expanded --load-path=node_modules --no-source-map Website.SharedImplementation/Styles/UserInterface.scss Website.SharedImplementation/wwwroot/.generated-content/UserInterface.css",
+      "dependencies": [ "build-content-minify-scripts-rollup" ],
+      "files": [
+        "Website.SharedImplementation/Styles/_app.scss",
+        "Website.SharedImplementation/Styles/_markdown.scss",
+        "Website.SharedImplementation/Styles/_toast.scss",
+        "Website.SharedImplementation/Styles/_universal-page-viewer.scss",
+        "Website.SharedImplementation/Styles/UserInterface.scss"
+      ],
+      "output": [ "Website/Website.SharedImplementation/wwwroot/.generated-content/UserInterface.css" ]
+    },
+    "build-content-minify-scripts-rollup": {
+      "command": "rollup --config rollup.website.min.mjs",
+      "dependencies": [ "build-content-scripts-rollup" ],
+      "files": [ ".destination/WebsiteScripts/**/*.js" ],
+      "output": [ "Website.SharedImplementation/wwwroot/.generated-content/website-components.min.js" ]
+    },
+    "build-content-scripts-rollup": {
+      "command": "rollup --config rollup.website.mjs",
+      "dependencies": [ "build-content-scripts-components" ],
+      "files": [ ".destination/WebsiteScripts/**/*.js" ],
+      "output": [ "Website.SharedImplementation/wwwroot/.generated-content/website-components.js" ]
+    },
+    "build-content-scripts-components": {
+      "command": "tsc -b Content/tsconfig.json",
+      "dependencies": [ "build-element-editor-scripts-rollup" ],
+      "files": [
+        "Content/tsconfig.json",
+        "Content/**/*.ts"
+      ],
+      "output": [ ".destination/*.js" ]
+    },
+    "build-element-editor-scripts-rollup": {
+      "command": "rollup --config rollup.element.editor.config.mjs",
+      "dependencies": [ "build-element-editor-scripts" ],
+      "files": [
+        "rollup.element.editor.config.mjs",
+        ".destination/ElementEditorScripts/*.js"
+      ],
+      "output": [ "ElementEditor.UserInterface/wwwroot/.generated-content/ElementEditor.js" ]
+    },
+    "build-element-editor-scripts": {
+      "clean": "if-file-deleted",
+      "command": "tsc -b ElementEditor.UserInterface/Scripts/tsconfig.json",
+      "dependencies": [ "build-element-editor-styles" ],
+      "files": [
+        "ElementEditor.UserInterface/Scripts/tsconfig.json",
+        "ElementEditor.UserInterface/Scripts/EEGrid.ts",
+        "ElementEditor.UserInterface/Scripts/ElementEditor.ts"
+      ],
+      "output": [
+        ".destination/ElementEditorScripts/EEGrid.js",
+        ".destination/ElementEditorScripts/ElementEditor.js"
+      ]
+    },
+    "build-element-editor-styles": {
+      "command": "sass --no-color --unicode --style=expanded --load-path=node_modules --no-source-map ElementEditor.UserInterface/Styles/ElementEditor.scss ElementEditor.UserInterface/wwwroot/.generated-content/ElementEditor.css",
+      "dependencies": [ "copy-configurations-content" ],
+      "files": [ "ElementEditor.UserInterface/Styles/*.scss" ],
+      "output": [ "ElementEditor.UserInterface/wwwroot/.generated-content/ElementEditor.css" ]
+    },
+    "copy-configurations-content": {
+      "command": "deno --check --allow-read --allow-write Scripts/copy-configurations-content/copy-configurations-content.ts",
+      "dependencies": [ "copy-components-content" ],
+      "files": [
+        "./appsettings.Debug.json",
+        "./appsettings.Release.json",
+        "./nlog.Debug.json",
+        "./nlog.Release.json"
+      ],
+      "output": [
+        "ElementEditor.UserInterface/appsettings.Debug.json",
+        "ElementEditor.UserInterface/appsettings.Release.json",
+        "ElementEditor.UserInterface/nlog.Debug.json",
+        "ElementEditor.UserInterface/nlog.Release.json",
+        "Docsite.UserInterface/appsettings.Debug.json",
+        "Docsite.UserInterface/appsettings.Release.json",
+        "Docsite.UserInterface/nlog.Debug.json",
+        "Docsite.UserInterface/nlog.Release.json",
+        "Website.DataServices/appsettings.Debug.json",
+        "Website.DataServices/appsettings.Release.json",
+        "Website.DataServices/nlog.Debug.json",
+        "Website.DataServices/nlog.Release.json",
+        "ScaffoldContent/appsettings.Debug.json",
+        "ScaffoldContent/appsettings.Release.json",
+        "ScaffoldContent/nlog.Debug.json",
+        "ScaffoldContent/nlog.Release.json",
+        "Website.UserInterface/appsettings.Debug.json",
+        "Website.UserInterface/appsettings.Release.json",
+        "Website.UserInterface/nlog.Debug.json",
+        "Website.UserInterface/nlog.Release.json"
+      ]
+    },
+    "copy-components-content": {
+      "command": "deno --check --allow-read --allow-write Scripts/copy-components-content/copy-components-content.ts",
+      "files": [
+        "../BlazorComponents/.blazor-api-dataset/blazor-api-dataset.json",
+        "../ReactComponents/.react-api-dataset/react-api-dataset.json",
+        "../WebComponents/.external-definitions/fouc-control.css",
+        "../WebComponents/.external-definitions/material-symbols-outlined.css",
+        "../WebComponents/.external-definitions/material-symbols-rounded.css",
+        "../WebComponents/.external-definitions/material-symbols-sharp.css",
+        "../WebComponents/.external-definitions/roboto.css",
+        "../WebComponents/.external-definitions/web-components-class-names.json",
+        "../WebComponents/.rollup/web-components.d.ts",
+        "../WebComponents/.rollup/web-components.js",
+        "../WebComponents/.rollup/web-components.js.map",
+        "../WebComponents/.size-dataset/bundle-sizes.json",
+        "../WebComponents/.web-api-dataset/web-api-dataset.json"
+      ],
+      "output": [
+        ".external-definitions/blazor-api-dataset.json",
+        ".external-definitions/bundle-sizes.json",
+        ".external-definitions/react-api-dataset.json",
+        ".external-definitions/web-api-dataset.json",
+        ".external-definitions/web-components-class-names.json",
+        "Docsite.Vite/.external-definitions/fouc-control.css",
+        "Docsite.Vite/.external-definitions/material-symbols-outlined.css",
+        "Docsite.Vite/.external-definitions/material-symbols-rounded.css",
+        "Docsite.Vite/.external-definitions/material-symbols-sharp.css",
+        "Docsite.Vite/.external-definitions/roboto.css",
+        "Docsite.Vite/.external-definitions/web-components.d.ts",
+        "Docsite.Vite/.external-definitions/web-components.js",
+        "Docsite.Vite/.external-definitions/web-components.js.map"
+      ]
+    }
+  }
+}

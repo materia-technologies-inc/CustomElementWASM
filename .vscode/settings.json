@@ -1,0 +1,54 @@
+{
+  "deno.disablePaths": [
+    "source",
+    "website",
+  ],
+  "deno.enable": true,
+  "deno.lint": true,
+  "typescript.preferences.includePackageJsonAutoImports": "auto",
+  "typescript.suggest.autoImports": true,
+  "lit-plugin.rules.no-invalid-css": "off",
+  "extensions.experimental.affinity": {
+    "GitHub.copilot": 1,
+    "GitHub.copilot-chat": 1
+  },
+  "files.exclude": {
+    "**/node_modules": true,
+    "**/bin": true,
+    "**/obj": true,
+    "**/.git": true
+  },
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/bin": true,
+    "**/obj": true
+  },
+  // Enhanced code completion settings
+  "editor.suggest.snippetsPreventQuickSuggestions": false,
+  "editor.suggestSelection": "first",
+  "editor.suggest.localityBonus": true,
+  "editor.suggest.shareSuggestSelections": true,
+  "editor.suggest.showWords": true,
+  "editor.wordBasedSuggestions": "matchingDocuments",
+  "editor.quickSuggestions": {
+    "other": true,
+    "comments": false,
+    "strings": true
+  },
+  "editor.quickSuggestionsDelay": 10,
+  "editor.parameterHints.enabled": true,
+  "editor.parameterHints.cycle": true,
+  // IntelliSense enhancements
+  "typescript.suggest.completeFunctionCalls": true,
+  "typescript.suggest.includeCompletionsForImportStatements": true,
+  "typescript.suggest.includeCompletionsWithSnippetText": true,
+  "typescript.suggest.classMemberSnippets.enabled": true,
+  "typescript.suggest.objectLiteralMethodSnippets.enabled": true,
+  // Copilot completion character
+  "github.copilot.editor.enableAutoCompletions": true,
+  // Tree view customization
+  "workbench.tree.indent": 24,
+  "workbench.colorCustomizations": {
+    "tree.indentGuidesStroke": "#00ff00"
+  }
+}

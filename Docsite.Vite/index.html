@@ -1,0 +1,119 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blazor Custom Element Diagnostic</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background-color: #f5f5f5;
+    }
+
+    .diagnostic {
+      background: white;
+      padding: 20px;
+      margin: 10px 0;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .success {
+      color: green;
+    }
+
+    .error {
+      color: red;
+    }
+
+    .info {
+      color: blue;
+    }
+
+    blazor-markdig-viewer {
+      border: 2px dashed orange;
+      padding: 10px;
+      display: block;
+      min-height: 50px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Blazor Custom Element Diagnostic Test</h1>
+
+  <div class="diagnostic">
+    <h2>Status Checks:</h2>
+    <div id="status">Checking...</div>
+  </div>
+
+  <div class="diagnostic">
+    <h2>Custom Element Test:</h2>
+    <blazor-markdig-viewer name="Diagnostic User"></blazor-markdig-viewer>
+  </div>
+
+  <script>
+    // Diagnostic logging
+    console.log('=== Blazor Custom Element Diagnostic ===');
+    console.log('1. Script loading...');
+
+    // Check if Blazor is available
+    window.addEventListener('load', () => {
+      const statusDiv = document.getElementById('status');
+      let status = '';
+
+      // Check 1: Blazor object
+      if (typeof Blazor !== 'undefined') {
+        status += '<p class="success">✓ Blazor object is available</p>';
+        console.log('✓ Blazor object found:', Blazor);
+      } else {
+        status += '<p class="error">✗ Blazor object NOT available</p>';
+        console.error('✗ Blazor object not found');
+      }
+
+      // Check 2: Custom element
+      const element = document.querySelector('blazor-markdig-viewer');
+      if (element) {
+        status += '<p class="success">✓ Custom element found in DOM</p>';
+        console.log('✓ Custom element:', element);
+
+        const rect = element.getBoundingClientRect();
+        status += `<p class="info">Element size: ${rect.width}x${rect.height}</p>`;
+        console.log('Element dimensions:', rect);
+
+        // Check if it has Blazor's internal properties
+        if (element._blazor) {
+          status += '<p class="success">✓ Element has Blazor internals</p>';
+        } else {
+          status += '<p class="error">✗ Element missing Blazor internals (not hydrated)</p>';
+        }
+      } else {
+        status += '<p class="error">✗ Custom element NOT found</p>';
+      }
+
+      // Check 3: Check if custom element is defined
+      if (customElements.get('blazor-markdig-viewer')) {
+        status += '<p class="success">✓ Custom element is registered</p>';
+        console.log('✓ Custom element registered');
+      } else {
+        status += '<p class="error">✗ Custom element NOT registered</p>';
+        console.error('✗ Custom element not registered');
+      }
+
+      statusDiv.innerHTML = status;
+    });
+
+    // Log Blazor startup
+    if (typeof Blazor !== 'undefined') {
+      Blazor.start().then(() => {
+        console.log('✓ Blazor started successfully');
+      }).catch(err => {
+        console.error('✗ Blazor start failed:', err);
+      });
+    }
+  </script>
+
+  <!-- Load Blazor - ADJUST THIS PATH based on where you're serving from -->
+  <script src="_framework/blazor.webassembly.0o6sltz4v8.js"></script>
+</body>
+</html>
