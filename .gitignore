@@ -1,55 +1,11 @@
 ## 
-## Ignore temporary files and build results specific to Materia.WebComponents
-## We do this area first as we ignore all js files here, but we want to pick up some
-## configuration js files in Materia.Blazor
+## Ignore temporary files and build results
 ## 
-
-node_modules
-
-.color-utilities/
-.angular/
-.clean/
-.destination/
-.distribution/
-.external-definitions/
-.generated-content/
-.private/
-.generated*/
-.prescripts/
-.postscripts/
-.rollup/
-.scripts/
-.size-dataset/
-.token-dataset/
-.token-reports/
-.vs/
-.web-api-dataset/
-.wireit/
-
-## 
-## Ignore all js, except for materia-color-utilities.js
-##
-**/*.js
-**/*.js.map
-!**/material-color-utilities.js
-!**/material-color-utilities.js.map
-
-## 
-## Ignore temporary files and build results specific to all non-WebComponent projects
-##
 
 .artifacts/
-.blazor-api-dataset/
-.blazor-docfx-dataset/
-.copied-content/
-.react-api-dataset/
-generated-content/
-
-
-
-
-
-**/ReactComponents/Website/.website-resources
+Docsite.Vite/public
+node_modules
+.wireit/
 
 
 
