@@ -9,7 +9,7 @@ importers:
   .:
     devDependencies:
       '@rollup/plugin-commonjs':
-        specifier: ^28.0.8
+        specifier: ^28.0.7
         version: 28.0.8(rollup@4.52.4)
       '@rollup/plugin-node-resolve':
         specifier: ^16.0.3
@@ -24,13 +24,13 @@ importers:
         specifier: ^14.1.2
         version: 14.1.2
       '@types/node':
-        specifier: ^24.8.1
+        specifier: ^24.7.2
         version: 24.8.1
       copyfiles:
         specifier: 2.4.1
         version: 2.4.1
       eslint:
-        specifier: ^9.38.0
+        specifier: ^9.37.0
         version: 9.38.0
       json5:
         specifier: ^2.2.3

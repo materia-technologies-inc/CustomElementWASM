@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Blazor Custom Element Diagnostic</title>
+  <base href="/" />
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -40,6 +41,9 @@
   </style>
 </head>
 <body>
+  <!-- Required for Blazor to initialize -->
+  <div id="app" style="display: none;"></div>
+  
   <h1>Blazor Custom Element Diagnostic Test</h1>
 
   <div class="diagnostic">
@@ -52,13 +56,25 @@
     <blazor-markdig-viewer name="Diagnostic User"></blazor-markdig-viewer>
   </div>
 
+  <script src="_framework/blazor.webassembly.0o6sltz4v8.js" autostart="false"></script>
   <script>
-    // Diagnostic logging
     console.log('=== Blazor Custom Element Diagnostic ===');
-    console.log('1. Script loading...');
+    console.log('Starting Blazor...');
 
-    // Check if Blazor is available
-    window.addEventListener('load', () => {
+    // Start Blazor and wait for it to be ready
+    Blazor.start().then(() => {
+      console.log('✓ Blazor started successfully');
+      
+      // Wait a bit for custom elements to register and hydrate
+      setTimeout(() => {
+        runDiagnostics();
+      }, 1000);
+    }).catch(err => {
+      console.error('✗ Blazor start failed:', err);
+      document.getElementById('status').innerHTML = '<p class="error">✗ Blazor failed to start. Check console.</p>';
+    });
+
+    function runDiagnostics() {
       const statusDiv = document.getElementById('status');
       let status = '';
 
@@ -84,8 +100,10 @@
         // Check if it has Blazor's internal properties
         if (element._blazor) {
           status += '<p class="success">✓ Element has Blazor internals</p>';
+          console.log('✓ Element hydrated');
         } else {
           status += '<p class="error">✗ Element missing Blazor internals (not hydrated)</p>';
+          console.warn('✗ Element not hydrated yet');
         }
       } else {
         status += '<p class="error">✗ Custom element NOT found</p>';
@@ -101,19 +119,7 @@
       }
 
       statusDiv.innerHTML = status;
-    });
-
-    // Log Blazor startup
-    if (typeof Blazor !== 'undefined') {
-      Blazor.start().then(() => {
-        console.log('✓ Blazor started successfully');
-      }).catch(err => {
-        console.error('✗ Blazor start failed:', err);
-      });
     }
   </script>
-
-  <!-- Load Blazor - ADJUST THIS PATH based on where you're serving from -->
-  <script src="_framework/blazor.webassembly.0o6sltz4v8.js"></script>
 </body>
 </html>
