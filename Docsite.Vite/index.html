@@ -53,7 +53,24 @@
 
   <div class="diagnostic">
     <h2>Custom Element Test:</h2>
-    <blazor-markdig-viewer name="Diagnostic User"></blazor-markdig-viewer>
+    <blazor-markdig-viewer markdown-content="# Hello, Simon!
+
+This is a **Blazor Custom Element** that renders markdown using **Markdig**.
+
+## Features:
+- Easy to use
+- Supports all markdown features
+- Integrates seamlessly with Vite
+
+### Code Example:
+```csharp
+var message = &quot;Hello from Blazor!&quot;;
+Console.WriteLine(message);
+```
+
+---
+
+*Powered by Blazor WebAssembly*"></blazor-markdig-viewer>
   </div>
 
   <script src="_framework/blazor.webassembly.0o6sltz4v8.js" autostart="false"></script>
@@ -97,13 +114,13 @@
         status += `<p class="info">Element size: ${rect.width}x${rect.height}</p>`;
         console.log('Element dimensions:', rect);
 
-        // Check if it has Blazor's internal properties
-        if (element._blazor) {
-          status += '<p class="success">✓ Element has Blazor internals</p>';
-          console.log('✓ Element hydrated');
+        // Check if element has rendered content (better than checking _blazor property)
+        if (element.innerHTML && element.innerHTML.trim().length > 0) {
+          status += '<p class="success">✓ Element has rendered content</p>';
+          console.log('✓ Element has content:', element.innerHTML.substring(0, 100));
         } else {
-          status += '<p class="error">✗ Element missing Blazor internals (not hydrated)</p>';
-          console.warn('✗ Element not hydrated yet');
+          status += '<p class="error">✗ Element has no content</p>';
+          console.warn('✗ Element is empty');
         }
       } else {
         status += '<p class="error">✗ Custom element NOT found</p>';

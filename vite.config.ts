@@ -11,17 +11,9 @@ import { defineConfig } from 'vite'
 
 /*
 
-└── Website/                   ← Solution root
+└── CustomeElementWSM/                   ← Solution root
     ├── Docsite.Vite/          ← Server root
-    └── Content/               ← Accessible via '..'
-        ├── Articles/             
-        │   ├── About/
-        │   ├── Chameleon/
-        │   └── Theming/
-        ├── Components/             
-        │   ├── ActionCard/
-        │   ├── AssistChip/
-        │   └── .../
+    └── CustomElementWASM/     ← Custom element source
        
 In fs: { allow: ['..'] },
   the '..' allows access to Content (sibling to Docsite.Vite)

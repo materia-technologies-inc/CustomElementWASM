@@ -38,40 +38,16 @@
     ]
   },
   "devDependencies": {
-    "@rollup/plugin-commonjs": "^28.0.7",
-    "@rollup/plugin-node-resolve": "^16.0.3",
-    "@rollup/plugin-replace": "^6.0.2",
-    "@rollup/plugin-terser": "^0.4.4",
-    "@types/markdown-it": "^14.1.2",
-    "@types/node": "^24.7.2",
-    "copyfiles": "2.4.1",
-    "eslint": "^9.37.0",
     "json5": "^2.2.3",
     "lit": "^3.3.1",
-    "markdown-it": "^14.1.0",
-    "rollup": "^4.52.4",
-    "rollup-plugin-summary": "^3.0.1",
-    "sass": "^1.93.2",
-    "typescript": "^5.9.3",
     "vite": "npm:rolldown-vite@^7.1.17",
     "vite-tsconfig-paths": "^5.1.4",
     "wireit": "^0.14.12"
   },
   "scripts": {
-    "comment001": "A language without comments is almost as brain dead as a case sensitive file system",
-    "comment002": "x",
-    "comment003": "The following commands are 'active' in miscellaneouscomponents",
     "clean": "deno --check --allow-read --allow-write clean/clean.ts",
     "compile-package": "json5 -o package.json --space 2 package.json5",
-    "dev": "wireit",
-    "serve": "wireit"
-  },
-  "wireit": {
-    "dev": {
-      "command": "vite --force"
-    },
-    "serve": {
-      "command": "vite --force"
-    }
+    "dev": "vite --force",
+    "serve": "vite --force"
   }
 }
