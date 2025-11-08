@@ -45,9 +45,29 @@
     "wireit": "^0.14.12"
   },
   "scripts": {
+    "build": "wireit",
     "clean": "deno --check --allow-read --allow-write clean/clean.ts",
     "compile-package": "json5 -o package.json --space 2 package.json5",
     "dev": "vite --force",
     "serve": "vite --force"
+  },
+  "wireit": {
+    "build": {
+      "dependencies": [
+        "build-and-deploy-bce"
+      ]
+    },
+    "build-and-deploy-bce": {
+      "command": "deno --check --allow-env --allow-read --allow-run --allow-write ScriptsWS/build-and-deploy-bce/build-and-deploy-bce.ts",
+      "files": [
+        "ScriptsWS/build-and-deploy-bce/build-and-deploy-bce.ts",
+        "CMS.BlazorCustomElements/MarkdownViewer.razor",
+        "CMS.BlazorCustomElements/Program_CMS_BCE.cs"
+      ],
+      "output": [
+        "CMS.Vite/public/_content/**/*.*",
+        "CMS.Vite/public/_framework/**/*.*"
+      ]
+    }
   }
 }

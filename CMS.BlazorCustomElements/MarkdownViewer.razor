@@ -1,0 +1,138 @@
+﻿@*
+ * @license
+ * Copyright 2024-2025 Materia Technologies, Inc.
+ *
+ * SPDX-License-Identifier: MIT
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ *@
+
+@**
+ *  2025-10-23  Mark Stega
+ *              Created
+ *@
+
+@using Markdig
+@using System.Net.Http
+@inject HttpClient Http
+@namespace CustomElementWASM
+
+<div class="@GetContainerClass()" data-path="@MarkdownContentPath">
+    @if (_isLoading)
+    {
+        <p class="loading">Loading markdown...</p>
+    }
+    else if (!string.IsNullOrWhiteSpace(_errorMessage))
+    {
+        <p class="error">Error loading markdown: @_errorMessage</p>
+    }
+    else if (!string.IsNullOrWhiteSpace(_markdownContent))
+    {
+        @((MarkupString)Markdown.ToHtml(_markdownContent, _pipeline))
+    }
+    else
+    {
+        <p class="placeholder">No markdown content path provided.</p>
+    }
+</div>
+
+<style>
+    .markdown-viewer {
+        border: 2px solid #e0e0e0;
+        border-radius: 8px;
+        padding: 20px;
+        background-color: #ffffff;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        position: relative;
+        margin-top: 15px;
+    }
+
+    .markdown-viewer::before {
+        content: attr(data-path);
+        position: absolute;
+        top: -10px;
+        left: 10px;
+        background-color: #ffffff;
+        padding: 0 8px;
+        font-size: 12px;
+        color: #666;
+        font-family: monospace;
+    }
+
+    .markdown-viewer .loading {
+        color: #666;
+        font-style: italic;
+    }
+
+    .markdown-viewer .error {
+        color: #d32f2f;
+        padding: 10px;
+        background-color: #ffebee;
+        border-radius: 4px;
+    }
+
+    .markdown-viewer .placeholder {
+        color: #999;
+        font-style: italic;
+    }
+</style>
+
+@code {
+    private static readonly MarkdownPipeline _pipeline = new MarkdownPipelineBuilder()
+        .UseAdvancedExtensions()
+        .Build();
+
+    private string _markdownContent = string.Empty;
+    private bool _isLoading = false;
+    private string _errorMessage = string.Empty;
+    private string _lastFetchedPath = string.Empty;
+
+    [Parameter] 
+    public string MarkdownContentPath { get; set; } = string.Empty;
+
+    [Parameter]
+    public bool ShowDetails { get; set; } = false;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        // Only fetch if the path has changed
+        if (!string.IsNullOrWhiteSpace(MarkdownContentPath) && MarkdownContentPath != _lastFetchedPath)
+        {
+            await FetchMarkdownContent();
+        }
+    }
+
+    private async Task FetchMarkdownContent()
+    {
+        _isLoading = true;
+        _errorMessage = string.Empty;
+        _markdownContent = string.Empty;
+        _lastFetchedPath = MarkdownContentPath;
+
+        try
+        {
+            _markdownContent = await Http.GetStringAsync(MarkdownContentPath);
+        }
+        catch (HttpRequestException ex)
+        {
+            _errorMessage = $"Failed to fetch content: {ex.Message}";
+        }
+        catch (Exception ex)
+        {
+            _errorMessage = $"Unexpected error: {ex.Message}";
+        }
+        finally
+        {
+            _isLoading = false;
+        }
+    }
+
+    private string GetContainerClass()
+    {
+        return ShowDetails ? "markdown-viewer" : string.Empty;
+    }
+}

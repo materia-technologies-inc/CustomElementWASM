@@ -1,18 +1,18 @@
 <Solution>
   <Folder Name="/.Solution Items/">
-    <File Path="../.editorconfig" />
-    <File Path="../.github/dependabot.yml" />
-    <File Path="../.gitignore" />
-    <File Path="../global.json" />
-    <File Path=".editorconfig" />
+    <File Path=".gitignore" />
     <File Path="Directory.Build.props" />
-    <File Path="filterConfig.yml" />
     <File Path="package.json" />
     <File Path="package.json5" />
     <File Path="vite.config.ts" />
   </Folder>
-  <Project Path="CustomElementWASM/CustomElementWASM.csproj" />
-  <Project Path="Docsite.Vite/Docsite.Vite.csproj">
+  <Project Path="CMS.BlazorCustomElements/CMS.BlazorCustomElements.csproj">
+    <Build Solution="Release|*" Project="false" />
+  </Project>
+  <Project Path="CMS.Vite/CMS.Vite.csproj">
     <Build Project="false" />
+  </Project>
+  <Project Path="ScriptsWS/ScriptsWS.csproj">
+    <Build Solution="Release|*" Project="false" />
   </Project>
 </Solution>

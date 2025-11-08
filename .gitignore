@@ -3,7 +3,8 @@
 ## 
 
 .artifacts/
-Docsite.Vite/public
+CMS.Vite/public/_content
+CMS.Vite/public/_framework
 node_modules
 .wireit/
 

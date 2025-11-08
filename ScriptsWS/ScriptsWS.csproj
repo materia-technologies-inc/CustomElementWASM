@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <!-- Prevent this project from being built -->
+    <IsPackable>false</IsPackable>
+    <IsPublishable>false</IsPublishable>
+    <!-- Exclude from source build -->
+    <ExcludeFromSourceBuild>true</ExcludeFromSourceBuild>
+    <!-- Disable all compilation -->
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <EnableDefaultEmbeddedResourceItems>false</EnableDefaultEmbeddedResourceItems>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Include all files for viewing but don't compile them -->
+    <Content Include="**/*.*" Exclude="bin/**;obj/**;*.csproj;*.user" />
+  </ItemGroup>
+
+</Project>

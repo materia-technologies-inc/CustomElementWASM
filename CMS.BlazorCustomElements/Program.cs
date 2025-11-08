@@ -1,4 +1,4 @@
-﻿/**
+/**
  * @license
  * Copyright 2024-2025 Materia Technologies, Inc.
  *
@@ -16,18 +16,17 @@
  *              Created
  */
 
-import { defineConfig } from 'vite'
+using CustomElementWASM;
 
-// https://vitejs.dev/config/
+using Microsoft.AspNetCore.Components.Web;
+using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 
-export default defineConfig({
-    base: '/',
-    build: { outDir: '.distribution' },
-    root: 'CMS.Vite',
-    server: {
-        fs: { allow: ['..'] }, // Allow access to Content sibling directory
-        host: '0.0.0.0',
-        port: 7305,
-        strictPort: true,
-    },
-});
+var builder = WebAssemblyHostBuilder.CreateDefault(args);
+
+// Configure HttpClient for fetching markdown files
+builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+
+// register the viewer component as a custom element
+builder.RootComponents.RegisterCustomElement<MarkdownViewer>("markdown-viewer");
+
+await builder.Build().RunAsync();

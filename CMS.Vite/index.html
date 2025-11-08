@@ -1,0 +1,123 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blazor Custom Element Diagnostic</title>
+    <base href="/" />
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+
+        .diagnostic {
+            background: white;
+            padding: 20px;
+            margin: 10px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .success {
+            color: green;
+        }
+
+        .error {
+            color: red;
+        }
+
+        .info {
+            color: blue;
+        }
+    </style>
+</head>
+<body>
+    <!-- Required for Blazor to initialize -->
+    <div id="app" style="display: none;"></div>
+
+    <h1>Blazor Custom Element Diagnostic Test</h1>
+
+    <div class="diagnostic">
+        <h2>Status Checks:</h2>
+        <div id="status">Checking...</div>
+    </div>
+
+    <div class="diagnostic">
+        <h2>Custom Element Test:</h2>
+        <markdown-viewer markdown-content-path="/sample.md" show-details="true"></markdown-viewer>
+    </div>
+
+    <script src="_framework/blazor.webassembly.0o6sltz4v8.js" autostart="false"></script>
+    <script>
+        console.log('=== Blazor Custom Element Diagnostic ===');
+        console.log('Starting Blazor...');
+
+        // Start Blazor and wait for it to be ready
+        Blazor.start().then(() => {
+            console.log('✓ Blazor started successfully');
+
+            // Wait a bit for custom elements to register and hydrate
+            setTimeout(() => {
+                runDiagnostics();
+            }, 1000);
+        }).catch(err => {
+            console.error('✗ Blazor start failed:', err);
+            document.getElementById('status').innerHTML = '<p class="error">✗ Blazor failed to start. Check console.</p>';
+        });
+
+        function runDiagnostics() {
+            const statusDiv = document.getElementById('status');
+            let status = '';
+
+            // Check 1: Blazor object
+            if (typeof Blazor !== 'undefined') {
+                status += '<p class="success">✓ Blazor object is available</p>';
+                console.log('✓ Blazor object found:', Blazor);
+            } else {
+                status += '<p class="error">✗ Blazor object NOT available</p>';
+                console.error('✗ Blazor object not found');
+            }
+
+            // Check 2: Custom element in DOM
+            const element = document.querySelector('markdown-viewer');
+            if (element) {
+                status += '<p class="success">✓ Custom element found in DOM</p>';
+                console.log('✓ Custom element:', element);
+
+                const rect = element.getBoundingClientRect();
+                status += `<p class="success">✓ Element size in DOM: ${rect.width}x${rect.height}</p>`;
+                console.log('Element dimensions in DOM:', rect);
+            } else {
+                status += '<p class="error">✗ Custom element NOT found in DOM</p>';
+            }
+
+            // Check 3: Check if custom element is defined
+            if (customElements.get('markdown-viewer')) {
+                status += '<p class="success">✓ Custom element is registered</p>';
+                console.log('✓ Custom element registered');
+            } else {
+                status += '<p class="error">✗ Custom element NOT registered</p>';
+                console.error('✗ Custom element not registered');
+            }
+
+            // Check 4: Custom element details
+            if (element) {
+                // Check if element has rendered content (better than checking _blazor property)
+                if (element.innerHTML && element.innerHTML.trim().length > 0) {
+                    status += '<p class="success">✓ Custom element has rendered content</p>';
+                    console.log('✓ Custom element has content:', element.innerHTML.substring(0, 100));
+                } else {
+                    status += '<p class="error">✗ Element has no content</p>';
+                    console.warn('✗ Element is empty');
+                }
+            } else {
+                status += '<p class="error">✗ Custom element NOT found</p>';
+            }
+
+            statusDiv.innerHTML = status;
+        }
+    </script>
+</body>
+</html>
