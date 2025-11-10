@@ -2,10 +2,12 @@
   <Folder Name="/.Solution Items/">
     <File Path=".gitignore" />
     <File Path="Directory.Build.props" />
+    <File Path="dotnet-install.ps1" />
     <File Path="package.json" />
     <File Path="package.json5" />
     <File Path="vite.config.ts" />
   </Folder>
+  <Project Path="CleanWS/CleanWS.csproj" />
   <Project Path="CMS.BlazorCustomElements/CMS.BlazorCustomElements.csproj">
     <Build Solution="Release|*" Project="false" />
   </Project>

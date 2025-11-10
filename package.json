@@ -46,10 +46,9 @@
   },
   "scripts": {
     "build": "wireit",
-    "clean": "deno --check --allow-read --allow-write clean/clean.ts",
+    "clean": "deno --check --allow-read --allow-write cleanWS/clean-ws.ts",
     "compile-package": "json5 -o package.json --space 2 package.json5",
-    "dev": "vite --force",
-    "serve": "vite --force"
+    "dev": "vite --force"
   },
   "wireit": {
     "build": {

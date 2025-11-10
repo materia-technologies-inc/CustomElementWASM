@@ -94,37 +94,6 @@ if (fs.existsSync(sourceContent)) {
     process.exit(1);
 }
 
-///////////////////////////////////////////////////////////////////
-// Copy from an RC1 generated publish to get around a known RC2 bug
-///////////////////////////////////////////////////////////////////
-console.log("");
-console.log("Step 3W: Copying published files from an RC1 build to Vite public folder to mitigate an RC2 build issue...");
-
-const SourceContentRC1 = path.join('CMS.Vite', 'public', '_content.rc1');
-const sourceFrameworkRC1 = path.join('CMS.Vite', 'public', '_framework.rc1');
-
-// Copy _framework directory
-if (fs.existsSync(sourceFrameworkRC1)) {
-    copyDirectoryRecursive(sourceFrameworkRC1, targetFramework);
-    console.log("  Copied _framework.RC1 to Vite");
-
-} else {
-    console.error("  Source _framework.RC1 not found!");
-    process.exit(1);
-}
-
-// Copy _content directory
-if (fs.existsSync(SourceContentRC1)) {
-    copyDirectoryRecursive(SourceContentRC1, targetContent);
-    console.log("  Copied _content.RC1 to Vite");
-} else {
-    console.error("  Source _content.RC1 not found!");
-    process.exit(1);
-}
-///////////////////////////////////////////////////////////////////
-// End RC2 workaround
-///////////////////////////////////////////////////////////////////
-
 console.log("");
 console.log("Step 4: Update index.html to reference correct blazor.webassembly.nnnnn.js file...");
 // .NET 10 finger-print feature
@@ -160,7 +129,7 @@ if (blazorWebAssemblyVersioned) {
 }
 
 console.log("");
-console.log("Step 4W: Create dotnet.js from versioned file (workaround for .NET 10 RC1/RC2 bug)");
+console.log("Step 5: Create dotnet.js from versioned file (workaround for .NET 10 RC1/RC2 bug)");
 const dotnetVersioned = fs.readdirSync(targetFramework)
     .filter(file => {
         const match = /^dotnet\.[a-z0-9]+\.js$/.test(file);
